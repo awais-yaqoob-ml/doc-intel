@@ -1,0 +1,241 @@
+Metadata-Version: 2.4
+Name: doc-intel
+Version: 0.1.0
+Summary: Document Intelligence System POC
+Author: Awais Yaqoob
+Requires-Python: >=3.11
+Description-Content-Type: text/markdown
+Requires-Dist: fastapi<1.0,>=0.118
+Requires-Dist: uvicorn[standard]<1.0,>=0.37
+Requires-Dist: pydantic<3.0,>=2.11
+Requires-Dist: pydantic-settings<3.0,>=2.10
+Requires-Dist: sqlalchemy<3.0,>=2.0
+Requires-Dist: asyncpg<1.0,>=0.30
+Requires-Dist: alembic<2.0,>=1.16
+Requires-Dist: qdrant-client<2.0,>=1.18
+Requires-Dist: sentence-transformers<6.0,>=5.0
+Requires-Dist: docling<3.0,>=2.97
+Requires-Dist: rapidocr-onnxruntime>=1.4.4
+Requires-Dist: pdf2image>=1.17.0
+Requires-Dist: pillow>=11.3.0
+Requires-Dist: gliner<0.3,>=0.2.26
+Requires-Dist: google-api-python-client<3.0,>=2.0
+Requires-Dist: google-auth<3.0,>=2.40
+Requires-Dist: google-auth-oauthlib<2.0,>=1.2
+Requires-Dist: google-auth-httplib2<1.0,>=0.2
+Requires-Dist: groq<1.0,>=0.30
+Requires-Dist: streamlit<2.0,>=1.49
+Requires-Dist: tenacity<10.0,>=9.1
+Requires-Dist: httpx<1.0,>=0.28
+Requires-Dist: aiofiles<25.0,>=24.1
+Requires-Dist: python-multipart>=0.0.20
+Requires-Dist: orjson<4.0,>=3.11
+Requires-Dist: structlog<26.0,>=25.4
+Provides-Extra: dev
+Requires-Dist: black>=25.1; extra == "dev"
+Requires-Dist: ruff>=0.12; extra == "dev"
+Requires-Dist: mypy>=1.17; extra == "dev"
+Requires-Dist: pytest>=8.4; extra == "dev"
+Requires-Dist: pytest-asyncio>=1.1; extra == "dev"
+
+```markdown
+# Document Intelligence System (OCR + Enrichment + RAG Pipeline)
+
+A modular end-to-end document intelligence system that supports:
+
+- Document ingestion (API + connectors)
+- OCR processing (RapidOCR-based engine)
+- Parsing (PDF, DOCX, Images)
+- Chunking (hierarchical strategy)
+- Embedding generation
+- Vector search (in-memory store)
+- Metadata + metrics tracking
+- NLP enrichment (NER, classification, OpenIE)
+- FastAPI backend
+- Streamlit dashboard
+
+---
+
+## Architecture Overview
+
+Pipeline flow:
+
+```
+
+Upload / Connector
+↓
+Parser
+↓
+OCR
+↓
+Chunking
+↓
+Embedding
+↓
+Vector Store + Metadata Store
+↓
+Enrichment (NER / Classifier / OpenIE)
+↓
+Search API
+
+```
+
+---
+
+## Project Structure
+
+```
+
+models/          → Data models (Pydantic schemas)
+connectors/      → External data sources (Google Drive, etc.)
+ocr/             → OCR engines + layout detection
+parsers/         → File format parsers
+chunking/        → Text chunking strategies
+embedding/       → Embedding generation
+storage/         → Vector + metadata + raw storage
+enrichment/      → NLP enrichment modules
+pipeline/        → Orchestration + job system
+api/             → FastAPI backend
+utils/           → Shared utilities
+dashboard/       → Streamlit UI
+
+````
+
+---
+
+## Quick Start
+
+### 1. Install dependencies
+
+```bash
+pip install fastapi uvicorn streamlit pydantic numpy requests
+````
+
+For OCR (optional):
+
+```bash
+pip install rapidocr-onnxruntime
+```
+
+---
+
+### 2. Run API
+
+```bash
+uvicorn api.main:app --reload
+```
+
+API will be available at:
+
+```
+http://localhost:8000
+```
+
+---
+
+### 3. Run Dashboard
+
+```bash
+streamlit run dashboard/app.py
+```
+
+---
+
+## API Endpoints
+
+### Health
+
+```
+GET /api/health
+```
+
+### Ingest Document
+
+```
+POST /api/ingest
+```
+
+### Search
+
+```
+POST /api/search
+```
+
+### Extract Entities
+
+```
+POST /api/extract
+```
+
+---
+
+## Key Design Features
+
+### 1. Modular Architecture
+
+Each component is independent:
+
+* OCR engine swappable
+* Parser router extensible
+* Storage layer abstracted
+
+### 2. Pluggable Storage
+
+Supports:
+
+* In-memory vector store (default)
+* Extensible to Weaviate / FAISS / Pinecone
+
+### 3. Pipeline Orchestration
+
+Central orchestrator manages:
+
+* parsing
+* OCR
+* chunking
+* embedding
+* enrichment
+
+### 4. Async-Ready Design
+
+Utilities prepared for async scaling.
+
+---
+
+## Next Improvements
+
+### Production upgrades:
+
+* Replace in-memory vector store with Weaviate / FAISS
+* Add Redis queue for job runner
+* Add proper async job execution (Celery / RQ)
+* Add authentication layer
+* Add document versioning
+
+### Model upgrades:
+
+* Replace stub OCR with full RapidOCR pipeline
+* Add transformer-based NER (spaCy / HF)
+* Add LLM-based summarization
+* Add reranking for search
+
+---
+
+## Example Use Case
+
+1. Upload PDF
+2. System extracts text via OCR
+3. Text is chunked
+4. Embeddings generated
+5. Stored in vector DB
+6. User queries via semantic search
+7. Enriched results returned (entities, classification)
+
+---
+
+## License
+
+Internal / Experimental POC
+
+```
+```

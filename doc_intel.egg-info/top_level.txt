@@ -1,0 +1,12 @@
+api
+chunking
+config
+connectors
+dashboard
+embedding
+enrichment
+models
+ocr
+parsers
+pipeline
+storage
