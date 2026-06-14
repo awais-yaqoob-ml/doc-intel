@@ -74,6 +74,12 @@ class Settings(BaseSettings):
         "credentials/google-service-account.json"
     )
 
+    # Azure Blob Storage
+    azure_blob_connection_string: str = ""
+    azure_blob_account_url: str = ""
+    azure_blob_container_name: str = ""
+    azure_blob_prefix: str = ""
+
     @property
     def postgres_url(self) -> str:
         """Build async PostgreSQL connection URL."""
